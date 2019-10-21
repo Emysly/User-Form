@@ -20,9 +20,6 @@ const Header = props => {
             <Link to={"/add"} className="nav-link float-left mr-3">
               <i className="fas fa-plus"></i> Add
             </Link>
-            <Link to={"/about"} className="nav-link float-left mr-3">
-              <i className="fas fa-question"></i> About
-            </Link>
           </li>
         </ul>
       </div>
