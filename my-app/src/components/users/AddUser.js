@@ -13,7 +13,7 @@ class NormalLoginForm extends Component {
   };
   handleSubmit = e => {
     e.preventDefault();
-    this.props.form.validateFields(async (err, values) => {
+    this.props.form.validateFields((err, values) => {
       if (!err) {
         values.birthday = values.birthday.toString().slice(4, 15);
         const newUser = {
@@ -32,7 +32,7 @@ class NormalLoginForm extends Component {
 
         this.props.form.resetFields();
 
-        await this.setState({
+        this.setState({
           firstname: "",
           lastname: "",
           birthday: "",
@@ -41,7 +41,6 @@ class NormalLoginForm extends Component {
         });
       }
     });
-    this.props.history.push("/");
   };
 
   render() {
@@ -51,7 +50,7 @@ class NormalLoginForm extends Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
-        <Form.Item label="First Name">
+        <Form.Item label="First Name" hasFeedback>
           {getFieldDecorator("firstname", {
             rules: [{ required: true, message: "Please input your firstname!" }]
           })(
@@ -61,7 +60,7 @@ class NormalLoginForm extends Component {
             />
           )}
         </Form.Item>
-        <Form.Item label="Last Name">
+        <Form.Item label="Last Name" hasFeedback>
           {getFieldDecorator("lastname", {
             rules: [{ required: true, message: "Please input your lastname!" }]
           })(
@@ -71,12 +70,12 @@ class NormalLoginForm extends Component {
             />
           )}
         </Form.Item>
-        <Form.Item label="Date Of Birth">
+        <Form.Item label="Date Of Birth" hasFeedback>
           {getFieldDecorator("birthday", {
             rules: [{ required: true, message: "Please input your birthday!" }]
           })(<DatePicker format="DD-MM-YYYY" />)}
         </Form.Item>
-        <Form.Item label="Age">
+        <Form.Item label="Age" hasFeedback>
           {getFieldDecorator("age", {
             rules: [{ required: true, message: "Please input your age!" }]
           })(
@@ -86,7 +85,7 @@ class NormalLoginForm extends Component {
             />
           )}
         </Form.Item>
-        <Form.Item label="Hobby">
+        <Form.Item label="Hobby" hasFeedback>
           {getFieldDecorator("hobby", {
             rules: [{ required: true, message: "Please input your hobby!" }]
           })(
