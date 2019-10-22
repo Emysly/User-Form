@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { addUser } from "../../actions/userActions";
 
 import "antd/dist/antd.css";
-import "./AddUser.css";
+import "../../AddUser.css";
 
 class NormalLoginForm extends Component {
   state = {
@@ -34,24 +34,38 @@ class NormalLoginForm extends Component {
 
         this.props.addUser(newUser);
 
-        // const allUsers = JSON.parse(localStorage.getItem("newUser")) || [];
+        const allUsers = JSON.parse(localStorage.getItem("newUser")) || [];
 
-        // allUsers.push(newUser);
+        allUsers.push(newUser);
 
-        // localStorage.setItem("newUser", JSON.stringify(allUsers));
+        localStorage.setItem("newUser", JSON.stringify(allUsers));
 
         this.props.form.resetFields();
 
-        // await this.setState({
-        //   firstname: "",
-        //   lastname: "",
-        //   birthday: "",
-        //   age: "",
-        //   hobby: ""
-        // });
+        this.props.history.push("/");
+      } else {
+        values.birthday = values.birthday.toString().slice(4, 15);
+        const { firstname, lastname, birthday, age, hobby } = values;
+        const newUser = {
+          id: uuid(),
+          firstname,
+          lastname,
+          birthday,
+          age,
+          hobby
+        };
+
+        this.props.addUser(newUser);
+
+        const allUsers = JSON.parse(localStorage.getItem("newUser")) || [];
+
+        allUsers.push(newUser);
+
+        localStorage.setItem("newUser", JSON.stringify(allUsers));
+
+        this.props.form.resetFields();
       }
     });
-    // this.props.history.push("/");
   };
 
   render() {

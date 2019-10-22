@@ -5,10 +5,9 @@ import { Provider } from "react-redux";
 import store from "./store";
 
 import Header from "./components/layouts/Header";
-// import Addusers from "./components/contacts/Addcontact";
+
 import WrappedNormalLoginForm from "./components/users/AddUser";
-import Users from "./components/users/Contacts";
-// import Users from "./components/contacts/Contacts";
+import Users from "./components/users/TableHolder";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 

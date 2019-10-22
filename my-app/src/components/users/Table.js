@@ -1,68 +1,57 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { addUser } from "../../actions/userActions";
-import PropTypes from "prop-types";
+
+import "bootstrap/dist/css/bootstrap.min.css";
 
 class Table extends Component {
-  componentDidMount() {
-    this.displayUsers();
-    this.props.getUsers();
-  }
-
-  displayUsers = () => {
-    const { user } = this.props.user;
-
-    console.log(user);
-    const users = JSON.parse(localStorage.getItem("newUser"));
-    let output = "";
-    if (!users) {
-      output = `<tr><td>No User <span class="text-danger">Found</span></td>`;
-    } else {
-      for (let i = 0; i < users.length; i++) {
-        output += `<tr><td>${users[i]["firstname"]}</td>
-            <td>${users[i]["lastname"]}</td>
-            <td>${users[i]["birthday"]}</td>
-            <td>${users[i]["age"]}</td>
-            <td>${users[i]["hobby"]}</td>
-            <tr>`;
-      }
-    }
-    const div = document.querySelector(".collections");
-    div.innerHTML = output;
+  state = {
+    showUserInfo: false
   };
 
   render() {
+    const { firstname, lastname, birthday, age, hobby } = this.props.user;
+
+    const { showUserInfo } = this.state;
+
     return (
-      <div>
-        <div className="card-body table-responsive p-0">
-          <table className="table table-hover">
-            <thead>
-              <tr>
-                <th>FirstName</th>
-                <th>LastName</th>
-                <th>Birthday</th>
-                <th>Age</th>
-                <th>Hobby</th>
-              </tr>
-            </thead>
-            <tbody className="collections"></tbody>
-          </table>
-        </div>
+      <div className="card card-body mb-3 bg-primary">
+        <h4 className="text-white">
+          USER DATA
+          {""}{" "}
+          <i
+            onClick={() =>
+              this.setState({ showUserInfo: !this.state.showUserInfo })
+            }
+            className="fas fa-sort-down"
+            style={{ cursor: "pointer" }}
+          />
+        </h4>
+        {showUserInfo ? (
+          <ul className="list-group">
+            <li className="list-group-item">
+              <h3>Firstname: </h3>
+              <h4>{firstname}</h4>
+            </li>
+            <li className="list-group-item">
+              <h3>Lastname: </h3>
+              <h4>{lastname}</h4>
+            </li>
+            <li className="list-group-item">
+              <h3>Birthday: </h3>
+              <h4>{birthday}</h4>
+            </li>
+            <li className="list-group-item">
+              <h3>Age: </h3>
+              <h4>{age}</h4>
+            </li>
+            <li className="list-group-item">
+              <h3>Hobby: </h3>
+              <h4>{hobby}</h4>
+            </li>
+          </ul>
+        ) : null}
       </div>
     );
   }
 }
 
-Table.propTypes = {
-  users: PropTypes.array.isRequired,
-  getUsers: PropTypes.func.isRequired
-};
-
-const mapStateToProps = state => ({
-  user: state.user.user
-});
-
-export default connect(
-  mapStateToProps,
-  { addUser }
-)(Table);
+export default Table;
