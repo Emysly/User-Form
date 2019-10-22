@@ -1,5 +1,10 @@
 import React, { Component } from "react";
-import { Form, DatePicker, Icon, Input, Button, Checkbox } from "antd";
+import PropTypes from "prop-types";
+import uuid from "uuid";
+import { Form, DatePicker, Icon, Input, Button } from "antd";
+import { connect } from "react-redux";
+import { addUser } from "../../actions/userActions";
+
 import "antd/dist/antd.css";
 import "./AddUser.css";
 
@@ -13,34 +18,40 @@ class NormalLoginForm extends Component {
   };
   handleSubmit = e => {
     e.preventDefault();
+
     this.props.form.validateFields((err, values) => {
       if (!err) {
         values.birthday = values.birthday.toString().slice(4, 15);
+        const { firstname, lastname, birthday, age, hobby } = values;
         const newUser = {
-          firstname: values.firstname,
-          lastname: values.lastname,
-          birthday: values.birthday,
-          age: values.age,
-          hobby: values.hobby
+          id: uuid(),
+          firstname,
+          lastname,
+          birthday,
+          age,
+          hobby
         };
 
-        const allUsers = JSON.parse(localStorage.getItem("newUser")) || [];
+        this.props.addUser(newUser);
 
-        allUsers.push(newUser);
+        // const allUsers = JSON.parse(localStorage.getItem("newUser")) || [];
 
-        localStorage.setItem("newUser", JSON.stringify(allUsers));
+        // allUsers.push(newUser);
+
+        // localStorage.setItem("newUser", JSON.stringify(allUsers));
 
         this.props.form.resetFields();
 
-        this.setState({
-          firstname: "",
-          lastname: "",
-          birthday: "",
-          age: "",
-          hobby: ""
-        });
+        // await this.setState({
+        //   firstname: "",
+        //   lastname: "",
+        //   birthday: "",
+        //   age: "",
+        //   hobby: ""
+        // });
       }
     });
+    // this.props.history.push("/");
   };
 
   render() {
@@ -109,8 +120,15 @@ class NormalLoginForm extends Component {
   }
 }
 
+NormalLoginForm.propTypes = {
+  addUser: PropTypes.func.isRequired
+};
+
 const WrappedNormalLoginForm = Form.create({ name: "normal_login" })(
   NormalLoginForm
 );
 
-export default WrappedNormalLoginForm;
+export default connect(
+  null,
+  { addUser }
+)(WrappedNormalLoginForm);

@@ -1,11 +1,18 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { addUser } from "../../actions/userActions";
+import PropTypes from "prop-types";
 
-export default class Table extends Component {
+class Table extends Component {
   componentDidMount() {
     this.displayUsers();
+    this.props.getUsers();
   }
 
   displayUsers = () => {
+    const { user } = this.props.user;
+
+    console.log(user);
     const users = JSON.parse(localStorage.getItem("newUser"));
     let output = "";
     if (!users) {
@@ -13,11 +20,11 @@ export default class Table extends Component {
     } else {
       for (let i = 0; i < users.length; i++) {
         output += `<tr><td>${users[i]["firstname"]}</td>
-          <td>${users[i]["lastname"]}</td>
-          <td>${users[i]["birthday"]}</td>
-          <td>${users[i]["age"]}</td>
-          <td>${users[i]["hobby"]}</td>
-          <tr>`;
+            <td>${users[i]["lastname"]}</td>
+            <td>${users[i]["birthday"]}</td>
+            <td>${users[i]["age"]}</td>
+            <td>${users[i]["hobby"]}</td>
+            <tr>`;
       }
     }
     const div = document.querySelector(".collections");
@@ -45,3 +52,17 @@ export default class Table extends Component {
     );
   }
 }
+
+Table.propTypes = {
+  users: PropTypes.array.isRequired,
+  getUsers: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({
+  user: state.user.user
+});
+
+export default connect(
+  mapStateToProps,
+  { addUser }
+)(Table);
